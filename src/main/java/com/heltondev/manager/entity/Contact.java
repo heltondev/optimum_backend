@@ -1,58 +1,23 @@
 package com.heltondev.manager.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
+import lombok.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import javax.persistence.*;
-import java.sql.Timestamp;
 
 @Data
-@Entity
-@NoArgsConstructor
-@Table(name = "m_users")
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown = true)
-@EntityListeners( AuditingEntityListener.class)
-@NamedQueries( {
-		@NamedQuery(name = "User.findByUsername", query = "SELECT u FROM User u WHERE u.username = :username")
-} )
-public class User {
+public class Contact {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(User.class);
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	@NonNull
+	private String email;
 
-	private String name;
+	private String phone;
 
-	private String username;
-
-	@JsonIgnore
-	private String password;
-
-	@CreationTimestamp
-	@Column(name = "created_at")
-	private Timestamp createdAt;
-
-	@CreationTimestamp
-	@Column(name = "updated_at")
-	private Timestamp updatedAt;
-
-	public User( String name, String username, String password ) {
-		setName( name );
-		setUsername( username );
-		setPassword( password );
-	}
+	private String skypeId;
 
 	/**
 	 * Returns a string representation of the object. In general, the {@code toString} method returns a string that
@@ -82,5 +47,4 @@ public class User {
 
 		return value;
 	}
-
 }

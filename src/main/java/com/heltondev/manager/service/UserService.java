@@ -52,7 +52,7 @@ public class UserService {
 		String queryName = "User.findByUsername";
 		Query query = em.createNamedQuery(queryName);
 		query.setParameter( "username", username );
-		User user = ( User ) query.getSingleResult();
+		com.heltondev.manager.entity.User user = ( com.heltondev.manager.entity.User ) query.getSingleResult();
 		return ( User ) query.getSingleResult();
 	}
 

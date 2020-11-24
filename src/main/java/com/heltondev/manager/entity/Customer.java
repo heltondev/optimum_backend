@@ -1,57 +1,69 @@
 package com.heltondev.manager.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
+import lombok.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
 @NoArgsConstructor
-@Table(name = "m_users")
+@Table(name = "m_customers")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @EntityListeners( AuditingEntityListener.class)
 @NamedQueries( {
-		@NamedQuery(name = "User.findByUsername", query = "SELECT u FROM User u WHERE u.username = :username")
+		@NamedQuery(name = "Customer.findByName", query = "SELECT u FROM Customer u WHERE u.name = :name")
 } )
-public class User {
+public class Customer {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(User.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(Customer.class);
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
+	@NonNull
 	private String name;
 
-	private String username;
+	@NonNull
+	private Timestamp dateOfBirth;
 
-	@JsonIgnore
-	private String password;
+	@NonNull
+	private String state;
 
-	@CreationTimestamp
-	@Column(name = "created_at")
-	private Timestamp createdAt;
+	@NonNull
+	private String city;
 
-	@CreationTimestamp
-	@Column(name = "updated_at")
-	private Timestamp updatedAt;
+	@NonNull
+	private String zipcode;
 
-	public User( String name, String username, String password ) {
+	@NonNull
+	private String cpf;
+
+	@Valid
+	private ArrayList<Contact> contact;
+
+	public Customer(String name, Timestamp dateOfBirth, String state, String city, String zipcode, String cpf, ArrayList<Contact> contact) {
 		setName( name );
-		setUsername( username );
-		setPassword( password );
+		setDateOfBirth( dateOfBirth );
+		setState( state );
+		setCity( city );
+		setZipcode( zipcode );
+		setCpf( cpf );
+		setContact( contact );
 	}
 
 	/**
