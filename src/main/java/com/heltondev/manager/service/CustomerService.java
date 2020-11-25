@@ -1,6 +1,7 @@
 package com.heltondev.manager.service;
 
 import com.heltondev.manager.model.Customer;
+import com.heltondev.manager.model.User;
 import com.heltondev.manager.repository.CustomerRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +15,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
 import javax.persistence.Query;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -118,8 +120,8 @@ public class CustomerService implements Serializable {
 
 	public void delete( long id) throws Exception {
 		LOGGER.info( "[CustomerService :: delete] -> Delete user" );
-		Optional<Customer> account = _customerRepository.findById(id);
-		if (account.isEmpty()) {
+		Optional<Customer> customer = _customerRepository.findById(id);
+		if (customer.isEmpty()) {
 			ResponseEntity.notFound().build();
 			return;
 		}
@@ -129,4 +131,5 @@ public class CustomerService implements Serializable {
 			throw new Exception(e);
 		}
 	}
+
 }

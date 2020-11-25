@@ -8,6 +8,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Generated;
+import org.hibernate.annotations.GenerationTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -31,13 +33,13 @@ public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id", updatable = false, nullable = false)
 	private long id;
 
 	private String name;
 
 	private String username;
-
-	@JsonIgnore
+	
 	private String password;
 
 	@CreationTimestamp
