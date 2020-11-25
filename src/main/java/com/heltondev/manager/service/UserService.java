@@ -112,8 +112,6 @@ public class UserService {
 		} else
 			throw new Exception();
 
-
-
 	}
 
 	public void delete( long id) throws Exception {
