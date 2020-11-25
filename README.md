@@ -28,23 +28,23 @@ Use for instance <https://github.com/heltondev/password-java-api>:
 > * Set up MySQL on your local environment
 >   * See how to set up MySQL on you local environment [here](<https://dev.mysql.com/doc/mysql-getting-started/en/>)
 >   * Set up database connection on application.properties file under resources' folder by replacing the following data:
->       * spring.datasource.<b>url</b>
->       *  spring.datasource.<b>username</b>
->       *  spring.datasource.<b>password</b>
+>       *  `spring.datasource.url`
+>       *  `spring.datasource.username`
+>       *  `spring.datasource.password`
 
 ## Usage
 Choosing an IDE of your preference and run the application from there, the API should provide endpoints as following:
 
-> * <b>/authenticate</b>
->   * <b>POST</b>
+> * <b>`/authenticate`</b>
+>   * <b>`POST`</b>
 >       * Expected "username" and "password" as payload
 >       * Returns a token as a string to be used as Authorization Bearer
 >
 > * Authentication Request
 > ```json
 > {
->    "username": "email@email.com",
->    "password": "13e24f95474cb15d631b793e24eb32235a337d621b11111426ffb2ddee6c119"
+>    "username": "test@test.com",
+>    "password": "8D969EEF6ECAD3C29A3A629280E686CF0C3F5D5A86AFF3CA12020C923ADC6C92"
 > }
 >```
 > * Authentication Response
@@ -54,18 +54,18 @@ Choosing an IDE of your preference and run the application from there, the API s
 > }
 > ```
 ---
-> * <b>/api/v1/users</b>
->   * <b>GET</b>
+> * <b>`/api/v1/users`</b>
+>   * <b>`GET`</b>
 >       * Returns a collection of all items stored on the database
->   * <b>POST</b>
+>   * <b>`POST`</b>
 >       * Insert an item on the database
 >
-> * <b>/api/v1/users/{id}</b>
->   * <b>GET</b>
+> * <b>`/api/v1/users/{id}`</b>
+>   * <b>`GET`</b>
 >       * Returns the item stored on the database where the ID matches with the criteria
->   * <b>PUT</b>
+>   * <b>`PUT`</b>
 >       * Update the item stored on the database where the ID matches with the criteria
->   * <b>DELETE</b>
+>   * <b>`DELETE`</b>
 >       * Delete the item stored on the database where the ID matches with the criteria
 > * User Request
 > ```json
@@ -88,24 +88,24 @@ Choosing an IDE of your preference and run the application from there, the API s
 > ]
 > ```
 ---
-> * <b>/api/v1/customers</b>
->   * <b>GET</b>
+> * <b>`/api/v1/customers`</b>
+>   * <b>`GET`</b>
 >       * Returns a collection of all items stored on the database
->   * <b>POST</b>
+>   * <b>`POST`</b>
 >       * Insert an item on the database
 >
-> * <b>/api/v1/customers/cpf/{cpf}</b>
->   * <b>GET</b>
+> * <b>`/api/v1/customers/cpf/{cpf}`</b>
+>   * <b>`GET`</b>
 >       * Returns a collection of all items stored on the database
-> * <b>/api/v1/customers/zipcode/{zipcode}</b>
->   * <b>GET</b>
+> * <b>`/api/v1/customers/zipcode/{zipcode}`</b>
+>   * <b>`GET`</b>
 >       * Returns a collection of all items stored on the database
-> * <b>/api/v1/customers/{id}</b>
->   * <b>GET</b>
+> * <b>`/api/v1/customers/{id}`</b>
+>   * <b>`GET`</b>
 >       * Returns the item stored on the database where the ID matches with the criteria
->   * <b>PUT</b>
+>   * <b>`PUT`</b>
 >       * Update the item stored on the database where the ID matches with the criteria
->   * <b>DELETE</b>
+>   * <b>`DELETE`</b>
 >       * Delete the item stored on the database where the ID matches with the criteria
 > * User Request
 > ```json
@@ -160,9 +160,21 @@ Choosing an IDE of your preference and run the application from there, the API s
 
 ## Notes
 > * Database
->  * The project is using MySQL dialect 8 here with <b>spring.jpa.show-sql=true</b> to see query execution. Notice, <b>spring.jpa.hibernate.ddl-auto=update</b>. 
+>  * The project is using MySQL dialect 8 here with `spring.jpa.show-sql=true`to see query execution. Notice, `spring.jpa.hibernate.ddl-auto=create-drop`. 
 Which will Create, update and delete the tables/database — Entity automatically. <br>
-That is the reason why project has registered the Entity with JPA using <b>@EntityListeners(AuditingEntityListener.class)</b>.
+Be aware the tables will be dropped when application closed. To persists data please change it to `spring.jpa.hibernate.ddl-auto=update`<br>
+That is the reason why project has registered the Entity with JPA using `@EntityListeners(AuditingEntityListener.class)`.
+<br><br>
+>  * To retrieve token the user passed in the request payload should exist in the database. In order to facilitate it, the application will automatically add a predefined user as below:
+>       * username: `test@test.com`
+>       * password: `8D969EEF6ECAD3C29A3A629280E686CF0C3F5D5A86AFF3CA12020C923ADC6C92`
+>       * Retrieve token request payload example:
+```json
+            {
+                "username": "test@test.com",
+                "password": "8D969EEF6ECAD3C29A3A629280E686CF0C3F5D5A86AFF3CA12020C923ADC6C92"
+            }
+```
 
 ## Tech Stack
 > * [Java](https://www.java.com/en/download/help/index.html)
