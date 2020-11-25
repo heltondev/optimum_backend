@@ -128,18 +128,4 @@ public class UserService {
 		}
 	}
 
-	public void addInitialUser() throws Exception {
-		LOGGER.info( "[UserService :: Creating Initial User]" );
-		List<User> users = _userRepository.findAll();
-
-		if ( users.isEmpty() ) {
-			User user = new User();
-			user.setName( "Test User" );
-			user.setUsername( "test@test.com" );
-			user.setPassword( "8D969EEF6ECAD3C29A3A629280E686CF0C3F5D5A86AFF3CA12020C923ADC6C92" );
-
-			_userRepository.save( user );
-		}
-	}
-
 }
