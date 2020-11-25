@@ -25,7 +25,8 @@ import java.sql.Timestamp;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @EntityListeners( AuditingEntityListener.class)
 @NamedQueries( {
-		@NamedQuery(name = "User.findByUsername", query = "SELECT u FROM User u WHERE u.username = :username")
+		@NamedQuery(name = "User.findByUsername", query = "SELECT u FROM User u WHERE u.username = :username"),
+		@NamedQuery(name = "User.addInitialUser", query = "INSERT INTO User (name, password, username) SELECT u.name, u.password, u.username FROM User u WHERE u.name = :name AND u.password = :password AND u.username = :username")
 } )
 public class User {
 
@@ -39,7 +40,7 @@ public class User {
 	private String name;
 
 	private String username;
-	
+
 	private String password;
 
 	@CreationTimestamp
