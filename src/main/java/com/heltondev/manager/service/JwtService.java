@@ -1,7 +1,7 @@
 package com.heltondev.manager.service;
 
 import com.heltondev.manager.config.JwtTokenUtil;
-import com.heltondev.manager.entity.Jwt;
+import com.heltondev.manager.model.Jwt;
 import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +39,7 @@ public class JwtService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername( String username) throws UsernameNotFoundException {
 
-		com.heltondev.manager.entity.User user = _userService.findByUsername( username );
+		com.heltondev.manager.model.User user = _userService.findByUsername( username );
 
 		// UserDetails Password should be passed as it is stored in the database (SHA256)
 		if (user.getUsername().equals(username)) {

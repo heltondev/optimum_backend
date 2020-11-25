@@ -1,8 +1,6 @@
 package com.heltondev.manager.service;
 
-import com.heltondev.manager.entity.Contact;
-import com.heltondev.manager.entity.Customer;
-import com.heltondev.manager.entity.User;
+import com.heltondev.manager.model.Customer;
 import com.heltondev.manager.repository.CustomerRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +14,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
 import javax.persistence.Query;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,12 +45,27 @@ public class CustomerService implements Serializable {
 	}
 
 	public Customer findByName(String name) {
-		LOGGER.info( "[CustomerService :: findById] -> Searching for specific items by id" );
+		LOGGER.info( "[CustomerService :: findByName] -> Searching for specific items by name" );
 		String queryName = "Customer.findByName";
 		Query query = em.createNamedQuery(queryName);
 		query.setParameter( "name", name );
-		com.heltondev.manager.entity.Customer user = ( com.heltondev.manager.entity.Customer ) query.getSingleResult();
 		return ( Customer ) query.getSingleResult();
+	}
+
+	public List<Customer> findByCpf( String cpf) {
+		LOGGER.info( "[CustomerService :: findByCpf] -> Searching for specific items by CPF" );
+		String queryName = "Customer.findByCpf";
+		Query query = em.createNamedQuery(queryName);
+		query.setParameter( "cpf", cpf );
+		return (List<Customer> ) query.getResultList();
+	}
+
+	public List<Customer> findByCep( String zipcode) {
+		LOGGER.info( "[CustomerService :: findByCep] -> Searching for specific items by CEP" );
+		String queryName = "Customer.findByCep";
+		Query query = em.createNamedQuery(queryName);
+		query.setParameter( "zipcode", zipcode );
+		return (List<Customer> ) query.getResultList();
 	}
 
 	public Customer create(Customer payload) throws Exception {
@@ -90,7 +104,7 @@ public class CustomerService implements Serializable {
 			customer.get().setCity( payload.getCity() );
 			customer.get().setZipcode( payload.getZipcode() );
 			customer.get().setCpf( payload.getCpf() );
-			customer.get().setContacts( payload.getContacts() );
+			customer.get().setContacts(new ArrayList<>( payload.getContacts() ) );
 			customer.get().setId( payload.getId() );
 
 			return _customerRepository.save( customer.get() );

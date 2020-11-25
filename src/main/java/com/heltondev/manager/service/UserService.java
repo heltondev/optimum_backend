@@ -1,6 +1,6 @@
 package com.heltondev.manager.service;
 
-import com.heltondev.manager.entity.User;
+import com.heltondev.manager.model.User;
 import com.heltondev.manager.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,7 +52,7 @@ public class UserService {
 		String queryName = "User.findByUsername";
 		Query query = em.createNamedQuery(queryName);
 		query.setParameter( "username", username );
-		com.heltondev.manager.entity.User user = ( com.heltondev.manager.entity.User ) query.getSingleResult();
+		com.heltondev.manager.model.User user = ( com.heltondev.manager.model.User ) query.getSingleResult();
 		return ( User ) query.getSingleResult();
 	}
 

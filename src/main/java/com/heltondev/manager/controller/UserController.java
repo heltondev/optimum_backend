@@ -1,6 +1,6 @@
 package com.heltondev.manager.controller;
 
-import com.heltondev.manager.entity.User;
+import com.heltondev.manager.model.User;
 import com.heltondev.manager.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 

@@ -1,31 +1,57 @@
-package com.heltondev.manager.entity;
+package com.heltondev.manager.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
-import lombok.NonNull;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Data
-public class Contact {
+@Entity
+@NoArgsConstructor
+@Table(name = "m_users")
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
+@EntityListeners( AuditingEntityListener.class)
+@NamedQueries( {
+		@NamedQuery(name = "User.findByUsername", query = "SELECT u FROM User u WHERE u.username = :username")
+} )
+public class User {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(Contact.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(User.class);
 
-	private String email;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long id;
 
-	private String phone;
+	private String name;
 
-	private String skypeId;
+	private String username;
 
-	public Contact() {
-		super();
-	}
+	@JsonIgnore
+	private String password;
 
-	public Contact( @NonNull String email, String phone, String skypeId ) {
-		setEmail( email );
-		setPhone( phone );
-		setPhone( skypeId );
+	@CreationTimestamp
+	@Column(name = "created_at")
+	private Timestamp createdAt;
+
+	@CreationTimestamp
+	@Column(name = "updated_at")
+	private Timestamp updatedAt;
+
+	public User( String name, String username, String password ) {
+		setName( name );
+		setUsername( username );
+		setPassword( password );
 	}
 
 	/**
@@ -56,4 +82,5 @@ public class Contact {
 
 		return value;
 	}
+
 }

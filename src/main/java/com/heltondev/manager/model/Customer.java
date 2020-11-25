@@ -1,57 +1,72 @@
-package com.heltondev.manager.entity;
+package com.heltondev.manager.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
+import lombok.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 @Data
 @Entity
-@NoArgsConstructor
-@Table(name = "m_users")
+@Table(name = "m_customers")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @EntityListeners( AuditingEntityListener.class)
-@NamedQueries( {
-		@NamedQuery(name = "User.findByUsername", query = "SELECT u FROM User u WHERE u.username = :username")
-} )
-public class User {
+@NamedQueries({
+		@NamedQuery(name = "Customer.findByName", query = "SELECT u FROM Customer u WHERE u.name = :name"),
+		@NamedQuery(name = "Customer.findByCpf", query = "SELECT u FROM Customer u WHERE u.cpf = :cpf"),
+		@NamedQuery(name = "Customer.findByCep", query = "SELECT u FROM Customer u WHERE u.zipcode = :zipcode")
+})
+public class Customer {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(User.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(Customer.class);
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
+	@NonNull
 	private String name;
 
-	private String username;
+	@NonNull
+	private Timestamp dateOfBirth;
 
-	@JsonIgnore
-	private String password;
+	@NonNull
+	private String state;
 
-	@CreationTimestamp
-	@Column(name = "created_at")
-	private Timestamp createdAt;
+	@NonNull
+	private String city;
 
-	@CreationTimestamp
-	@Column(name = "updated_at")
-	private Timestamp updatedAt;
+	@NonNull
+	private String zipcode;
 
-	public User( String name, String username, String password ) {
+	@NonNull
+	private String cpf;
+
+	@NonNull
+	@Column(columnDefinition="MEDIUMBLOB")
+	private ArrayList<Object> contacts;
+
+	public Customer() {
+		super();
+	}
+
+	public Customer(String name, Timestamp dateOfBirth, String state, String city, String zipcode, String cpf, ArrayList<Object> contacts) {
 		setName( name );
-		setUsername( username );
-		setPassword( password );
+		setDateOfBirth( dateOfBirth );
+		setState( state );
+		setCity( city );
+		setZipcode( zipcode );
+		setCpf( cpf );
+		setContacts( contacts );
 	}
 
 	/**

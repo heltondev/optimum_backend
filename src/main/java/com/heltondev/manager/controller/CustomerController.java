@@ -1,6 +1,6 @@
 package com.heltondev.manager.controller;
 
-import com.heltondev.manager.entity.Customer;
+import com.heltondev.manager.model.Customer;
 import com.heltondev.manager.service.CustomerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +34,22 @@ public class CustomerController {
 	 */
 	@GetMapping("/{id}")
 	public ResponseEntity<Customer> findById(@PathVariable( value = "id") long id) throws Exception {return _customerService.findById( id );}
+
+	/**
+	 * Retrieve the item from the database where id matches the to the criteria
+	 * @param zipcode Expected to receive an zipcode type String as input parameter
+	 * @return Returns List of Customer
+	 */
+	@GetMapping("/zipcode/{zipcode}")
+	public List<Customer> findByCep(@PathVariable( value = "zipcode") String zipcode) throws Exception {return _customerService.findByCep( zipcode );}
+
+	/**
+	 * Retrieve the item from the database where id matches the to the criteria
+	 * @param cpf Expected to receive an cpf type String as input parameter
+	 * @return Returns List of Customer
+	 */
+	@GetMapping("/cpf/{cpf}")
+	public List<Customer> findByCpf(@PathVariable( value = "cpf") String cpf) throws Exception {return _customerService.findByCpf( cpf );}
 
 	/**
 	 * Add a new item to the database

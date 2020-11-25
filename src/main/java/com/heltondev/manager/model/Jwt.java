@@ -1,4 +1,4 @@
-package com.heltondev.manager.entity;
+package com.heltondev.manager.model;
 
 import lombok.Data;
 import lombok.NonNull;
