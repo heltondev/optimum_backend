@@ -1,2 +1,1 @@
-INSERT INTO managerdb.m_users (id, created_at, name, password, updated_at, username)
-VALUES (null, NOW(), 'Test User', '8D969EEF6ECAD3C29A3A629280E686CF0C3F5D5A86AFF3CA12020C923ADC6C92', NOW(), 'test@test.com');
+INSERT INTO managerdb.m_users (id, created_at, name, password, updated_at, username) VALUES (null, NOW(), 'Test User', '8D969EEF6ECAD3C29A3A629280E686CF0C3F5D5A86AFF3CA12020C923ADC6C92', NOW(), 'test@test.com');
