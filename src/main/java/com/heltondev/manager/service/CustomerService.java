@@ -1,5 +1,6 @@
 package com.heltondev.manager.service;
 
+import com.heltondev.manager.entity.Contact;
 import com.heltondev.manager.entity.Customer;
 import com.heltondev.manager.entity.User;
 import com.heltondev.manager.repository.CustomerRepository;
@@ -8,22 +9,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
 import javax.persistence.Query;
-import java.sql.Timestamp;
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CustomerService {
+public class CustomerService implements Serializable {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CustomerService.class);
 
@@ -83,12 +80,23 @@ public class CustomerService {
 				throw new Exception();
 			}
 
-			payload.setId( customer.get().getId() );
+			payload.setId( id );
 
-			return _customerRepository.save( payload );
+			if ( payload.getContacts().size() < 1 ) throw new Exception("Should have at least 1 contact added");
+
+			customer.get().setName( payload.getName() );
+			customer.get().setDateOfBirth( payload.getDateOfBirth() );
+			customer.get().setState( payload.getState() );
+			customer.get().setCity( payload.getCity() );
+			customer.get().setZipcode( payload.getZipcode() );
+			customer.get().setCpf( payload.getCpf() );
+			customer.get().setContacts( payload.getContacts() );
+			customer.get().setId( payload.getId() );
+
+			return _customerRepository.save( customer.get() );
 
 		} else
-			throw new Exception();
+			throw new Exception("Exception: ID provided does not exist");
 
 
 

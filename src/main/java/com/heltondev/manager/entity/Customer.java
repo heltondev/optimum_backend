@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,13 +13,12 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.Valid;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @Entity
-@NoArgsConstructor
 @Table(name = "m_customers")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -53,17 +52,20 @@ public class Customer {
 	@NonNull
 	private String cpf;
 
-	@Valid
-	private ArrayList<Contact> contact;
+	private ArrayList<Object> contacts;
 
-	public Customer(String name, Timestamp dateOfBirth, String state, String city, String zipcode, String cpf, ArrayList<Contact> contact) {
+	public Customer() {
+		super();
+	}
+
+	public Customer(String name, Timestamp dateOfBirth, String state, String city, String zipcode, String cpf, ArrayList<Object> contacts) {
 		setName( name );
 		setDateOfBirth( dateOfBirth );
 		setState( state );
 		setCity( city );
 		setZipcode( zipcode );
 		setCpf( cpf );
-		setContact( contact );
+		setContacts( contacts );
 	}
 
 	/**

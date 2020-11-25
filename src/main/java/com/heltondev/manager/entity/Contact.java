@@ -10,14 +10,23 @@ import org.slf4j.LoggerFactory;
 @Data
 public class Contact {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(User.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(Contact.class);
 
-	@NonNull
 	private String email;
 
 	private String phone;
 
 	private String skypeId;
+
+	public Contact() {
+		super();
+	}
+
+	public Contact( @NonNull String email, String phone, String skypeId ) {
+		setEmail( email );
+		setPhone( phone );
+		setPhone( skypeId );
+	}
 
 	/**
 	 * Returns a string representation of the object. In general, the {@code toString} method returns a string that
