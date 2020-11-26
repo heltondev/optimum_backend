@@ -25,7 +25,7 @@ public class CustomerController {
 	 * @return list of Customers
 	 */
 	@GetMapping
-	public List<Customer> findAll() {return _customerService.findAll();}
+	public ResponseEntity<List<Customer>> findAll() {return ResponseEntity.ok(_customerService.findAll());}
 
 	/**
 	 * Retrieve the item from the database where id matches the to the criteria

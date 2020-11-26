@@ -1,1 +1,5 @@
 INSERT INTO managerdb.m_users (id, created_at, name, password, updated_at, username) VALUES (null, NOW(), 'Test User', '8D969EEF6ECAD3C29A3A629280E686CF0C3F5D5A86AFF3CA12020C923ADC6C92', NOW(), 'test@test.com');
+INSERT INTO managerdb.m_customers (id, city, contacts, cpf, date_of_birth, name, state, zipcode) VALUES (null, 'Sao Paulo', null, '00000000000', '2000-10-10 10:00:00', 'John Doe', 'SP', '16300000');
+INSERT INTO managerdb.m_customers (id, city, contacts, cpf, date_of_birth, name, state, zipcode) VALUES (null, 'Penapolis', null, '11111111111', '2002-08-15 10:00:00', 'Rachel Doe', 'SP', '17900000');
+INSERT INTO managerdb.m_customers (id, city, contacts, cpf, date_of_birth, name, state, zipcode) VALUES (null, 'Fortaleza', null, '22222222222', '2001-07-11 10:00:00', 'Ray Doe', 'CE', '11100000');
+INSERT INTO managerdb.m_customers (id, city, contacts, cpf, date_of_birth, name, state, zipcode) VALUES (null, 'Fortaleza', null, '22222222222', '2005-07-11 20:00:00', 'Julie Doe', 'RJ', '11100000');
