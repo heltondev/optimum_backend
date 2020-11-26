@@ -19,6 +19,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.OptionalLong;
 
 @Service
 public class CustomerService implements Serializable {
@@ -72,15 +73,17 @@ public class CustomerService implements Serializable {
 
 	public Customer create(Customer payload) throws Exception {
 		LOGGER.info( "[CustomerService :: create] -> Adding new user" );
-		Long selectedId = findByName( payload.getName() ).getId();
-		try {
-			if (!_customerRepository.existsById( selectedId ) )
-				return _customerRepository.save( payload );
-			else
-				throw new Exception("Customer already exists");
-		} catch ( Exception e ) {
-			throw new Exception(e);
-		}
+//		Optional<Long> selectedId = Optional.of( findByName( payload.getName() ).getId() );
+//		try {
+//			if (!_customerRepository.existsById( selectedId.get() ) )
+//				return _customerRepository.save( payload );
+//			else
+//				throw new Exception("Customer already exists");
+//		} catch ( Exception e ) {
+//			throw new Exception(e);
+//		}
+
+		return _customerRepository.save( payload );
 	}
 
 	public Customer update(Customer payload, long id) throws Exception {

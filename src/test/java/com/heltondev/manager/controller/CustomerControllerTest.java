@@ -51,14 +51,14 @@ public class CustomerControllerTest {
 	@Test
 	void findAll_whenNoRecord() {
 		Mockito.when(_customerService.findAll()).thenReturn( Collections.emptyList() );
-		assertThat(_customerController.findAll().size(), is(0));
+		assertThat( Objects.requireNonNull( _customerController.findAll().getBody() ).size(), is(0));
 		Mockito.verify(_customerService, Mockito.times(1)).findAll();
 	}
 
 	@Test
 	void findAll_whenRecord() {
 		Mockito.when(_customerService.findAll()).thenReturn( Arrays.asList(customerOne, customerTwo) );
-		assertThat(_customerController.findAll().size(), is(2));
+		assertThat( Objects.requireNonNull( _customerController.findAll().getBody() ).size(), is(2));
 		Mockito.verify(_customerService, Mockito.times(1)).findAll();
 	}
 
