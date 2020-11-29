@@ -32,9 +32,9 @@ public class UserService {
 	@PersistenceContext(type = PersistenceContextType.EXTENDED)
 	private EntityManager em;
 
-	public List<User> findAll() {
+	public ResponseEntity<List<User>> findAll() {
 		LOGGER.info( "[UserService :: findAll] -> Searching for all users" );
-		return _userRepository.findAll();
+		return new ResponseEntity<>( _userRepository.findAll(), HttpStatus.OK );
 	}
 
 	public ResponseEntity<User> findById(long id) throws Exception {
