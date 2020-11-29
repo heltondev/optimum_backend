@@ -8,7 +8,7 @@
 
 Use for instance <https://github.com/heltondev/optimum>:
 
-> * [Password Manager API](#title--repository-name)
+> * [Manager API](#title--repository-name)
 >   * [About](#about)
 >   * [Table of contents](#table-of-contents)
 >   * [Requirements](#requirements)
