@@ -15,6 +15,7 @@ import java.util.List;
 @Slf4j
 @Controller
 @RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping( { "/api/v1/users" })
 public class UserController {
 
@@ -26,7 +27,7 @@ public class UserController {
 	 * @return list of Users
 	 */
 	@GetMapping
-	public List<User> findAll() {return _userService.findAll();}
+	public ResponseEntity<List<User>> findAll() {return _userService.findAll();}
 
 	/**
 	 * Retrieve the item from the database where id matches the to the criteria

@@ -12,7 +12,16 @@ import javax.validation.Valid;
 import java.util.List;
 
 @Slf4j
-@Controller
+@CrossOrigin(
+		origins = {
+				"http://localhost:4200",
+				"http://localhost:4200/api/v1/customers",
+				"https://localhost:4200",
+				"http://localhost:8080"
+		},
+		allowedHeaders = "*",
+		allowCredentials = "true"
+)
 @RestController
 @RequestMapping( { "/api/v1/customers" })
 public class CustomerController {
@@ -25,7 +34,9 @@ public class CustomerController {
 	 * @return list of Customers
 	 */
 	@GetMapping
-	public ResponseEntity<List<Customer>> findAll() {return ResponseEntity.ok(_customerService.findAll());}
+	public ResponseEntity<List<Customer>> findAll() {
+		return ResponseEntity.ok(_customerService.findAll());
+	}
 
 	/**
 	 * Retrieve the item from the database where id matches the to the criteria

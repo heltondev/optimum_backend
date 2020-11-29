@@ -15,10 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -51,15 +48,15 @@ public class UserControllerTest {
 
 	@Test
 	void findAll_whenNoRecord() {
-		Mockito.when(_userService.findAll()).thenReturn( Collections.emptyList() );
-		assertThat(_userController.findAll().size(), is(0));
+		Mockito.when(_userService.findAll()).thenReturn( ( ResponseEntity<List<User>> ) Collections.emptyList() );
+		assertThat( Objects.requireNonNull( _userController.findAll().getBody() ).size(), is(0));
 		Mockito.verify(_userService, Mockito.times(1)).findAll();
 	}
 
 	@Test
 	void findAll_whenRecord() {
-		Mockito.when(_userService.findAll()).thenReturn( Arrays.asList(userOne, userTwo) );
-		assertThat(_userController.findAll().size(), is(2));
+		Mockito.when(_userService.findAll()).thenReturn( ( ResponseEntity<List<User>> ) Arrays.asList(userOne, userTwo) );
+		assertThat( Objects.requireNonNull( _userController.findAll().getBody() ).size(), is(2));
 		Mockito.verify(_userService, Mockito.times(1)).findAll();
 	}
 
