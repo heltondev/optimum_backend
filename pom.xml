@@ -123,6 +123,7 @@
 			<artifactId>jacoco-maven-plugin</artifactId>
 			<version>0.8.4</version>
 		</dependency>
+
 	</dependencies>
 
 	<build>
