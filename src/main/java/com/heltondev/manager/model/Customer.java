@@ -1,5 +1,6 @@
 package com.heltondev.manager.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -12,6 +13,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 @Data
@@ -37,7 +39,8 @@ public class Customer {
 	private String name;
 
 	@NonNull
-	private Timestamp dateOfBirth;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	private LocalDateTime dateOfBirth;
 
 	@NonNull
 	private String state;
@@ -59,7 +62,7 @@ public class Customer {
 		super();
 	}
 
-	public Customer(String name, Timestamp dateOfBirth, String state, String city, String zipcode, String cpf, ArrayList<Object> contacts) {
+	public Customer(String name, LocalDateTime dateOfBirth, String state, String city, String zipcode, String cpf, ArrayList<Object> contacts) {
 		setName( name );
 		setDateOfBirth( dateOfBirth );
 		setState( state );
