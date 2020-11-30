@@ -1,7 +1,6 @@
 package com.heltondev.manager.service;
 
 import com.heltondev.manager.model.Customer;
-import com.heltondev.manager.model.User;
 import com.heltondev.manager.repository.CustomerRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,11 +14,9 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
 import javax.persistence.Query;
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.OptionalLong;
 
 @Service
 public class CustomerService implements Serializable {
@@ -130,6 +127,7 @@ public class CustomerService implements Serializable {
 		}
 		try {
 			_customerRepository.deleteById( id );
+			ResponseEntity.ok( "Deleted successfully" );
 		} catch ( Exception e ) {
 			throw new Exception(e);
 		}

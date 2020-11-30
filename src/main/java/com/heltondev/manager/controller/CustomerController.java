@@ -5,7 +5,6 @@ import com.heltondev.manager.service.CustomerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -85,5 +84,5 @@ public class CustomerController {
 	 * @param id Expected to receive a Id as query parameter
 	 */
 	@DeleteMapping("/{id}")
-	public void deleteById( @PathVariable(value = "id") long id) throws Exception {_customerService.delete( id );}
+	public void deleteById( @PathVariable(value = "id") long id) throws Exception { _customerService.delete( id ); }
 }

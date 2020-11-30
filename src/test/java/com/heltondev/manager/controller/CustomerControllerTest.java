@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -43,9 +44,9 @@ public class CustomerControllerTest {
 
 	@BeforeAll
 	public static void init() {
-		customerOne = new Customer("John Doe", new Timestamp(1L), "SP", "Sao Paulo" , "00000000", "00000000000",  new ArrayList<>() );
-		customerTwo = new Customer("Rachel Doe", new Timestamp(2L), "CE", "Fortaleza" , "11111111", "11111111111",  new ArrayList<>() );
-		customerThree = new Customer("Michael Doe", new Timestamp(3L), "SP", "Sao Paulo" , "00000000", "22222222222",  new ArrayList<>() );
+		customerOne = new Customer("John Doe", null, "SP", "Sao Paulo" , "00000000", "00000000000",  new ArrayList<>() );
+		customerTwo = new Customer("Rachel Doe", null, "CE", "Fortaleza" , "11111111", "11111111111",  new ArrayList<>() );
+		customerThree = new Customer("Michael Doe", null, "SP", "Sao Paulo" , "00000000", "22222222222",  new ArrayList<>() );
 	}
 
 	@Test
