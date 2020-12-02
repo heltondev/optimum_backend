@@ -16,6 +16,9 @@ import java.util.List;
 				"http://localhost:4200",
 				"http://localhost:4200/api/v1/customers",
 				"https://localhost:4200",
+				"http://localhost:9000",
+				"http://localhost:9000/api/v1/customers",
+				"https://localhost:9000",
 				"http://localhost:8080"
 		},
 		allowedHeaders = "*",
