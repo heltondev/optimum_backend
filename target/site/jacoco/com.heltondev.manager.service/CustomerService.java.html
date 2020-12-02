@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CustomerService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">manager</a> &gt; <a href="index.source.html" class="el_package">com.heltondev.manager.service</a> &gt; <span class="el_source">CustomerService.java</span></div><h1>CustomerService.java</h1><pre class="source lang-java linenums">package com.heltondev.manager.service;
+
+import com.heltondev.manager.model.Customer;
+import com.heltondev.manager.repository.CustomerRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
+import javax.persistence.Query;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+<span class="nc" id="L22">public class CustomerService implements Serializable {</span>
+
+<span class="nc" id="L24">	private static final Logger LOGGER = LoggerFactory.getLogger(CustomerService.class);</span>
+
+	@Autowired
+	CustomerRepository _customerRepository;
+
+	@PersistenceContext(type = PersistenceContextType.EXTENDED)
+	private EntityManager em;
+
+	public List&lt;Customer&gt; findAll() {
+<span class="nc" id="L33">		LOGGER.info( &quot;[CustomerService :: findAll] -&gt; Searching for all users&quot; );</span>
+<span class="nc" id="L34">		return _customerRepository.findAll();</span>
+	}
+
+	public ResponseEntity&lt;Customer&gt; findById(long id) throws Exception {
+<span class="nc" id="L38">		LOGGER.info( &quot;[CustomerService :: findById] -&gt; Searching for specific items by id&quot; );</span>
+<span class="nc" id="L39">		Optional&lt;Customer&gt; customer = _customerRepository.findById(id);</span>
+<span class="nc bnc" id="L40" title="All 2 branches missed.">		if ( customer.isPresent() )</span>
+<span class="nc" id="L41">			return customer</span>
+<span class="nc" id="L42">					.map( selected -&gt; new ResponseEntity&lt;&gt;( selected, HttpStatus.OK ) )</span>
+<span class="nc" id="L43">					.orElseGet( () -&gt; new ResponseEntity&lt;&gt;( HttpStatus.NOT_FOUND ) );</span>
+<span class="nc" id="L44">		else throw new Exception();</span>
+	}
+
+	public Customer findByName(String name) {
+<span class="nc" id="L48">		LOGGER.info( &quot;[CustomerService :: findByName] -&gt; Searching for specific items by name&quot; );</span>
+<span class="nc" id="L49">		String queryName = &quot;Customer.findByName&quot;;</span>
+<span class="nc" id="L50">		Query query = em.createNamedQuery(queryName);</span>
+<span class="nc" id="L51">		query.setParameter( &quot;name&quot;, name );</span>
+<span class="nc" id="L52">		return ( Customer ) query.getSingleResult();</span>
+	}
+
+	public List&lt;Customer&gt; findByCpf( String cpf) {
+<span class="nc" id="L56">		LOGGER.info( &quot;[CustomerService :: findByCpf] -&gt; Searching for specific items by CPF&quot; );</span>
+<span class="nc" id="L57">		String queryName = &quot;Customer.findByCpf&quot;;</span>
+<span class="nc" id="L58">		Query query = em.createNamedQuery(queryName);</span>
+<span class="nc" id="L59">		query.setParameter( &quot;cpf&quot;, cpf );</span>
+<span class="nc" id="L60">		return (List&lt;Customer&gt; ) query.getResultList();</span>
+	}
+
+	public List&lt;Customer&gt; findByCep( String zipcode) {
+<span class="nc" id="L64">		LOGGER.info( &quot;[CustomerService :: findByCep] -&gt; Searching for specific items by CEP&quot; );</span>
+<span class="nc" id="L65">		String queryName = &quot;Customer.findByCep&quot;;</span>
+<span class="nc" id="L66">		Query query = em.createNamedQuery(queryName);</span>
+<span class="nc" id="L67">		query.setParameter( &quot;zipcode&quot;, zipcode );</span>
+<span class="nc" id="L68">		return (List&lt;Customer&gt; ) query.getResultList();</span>
+	}
+
+	public Customer create(Customer payload) throws Exception {
+<span class="nc" id="L72">		LOGGER.info( &quot;[CustomerService :: create] -&gt; Adding new user&quot; );</span>
+//		Optional&lt;Long&gt; selectedId = Optional.of( findByName( payload.getName() ).getId() );
+//		try {
+//			if (!_customerRepository.existsById( selectedId.get() ) )
+//				return _customerRepository.save( payload );
+//			else
+//				throw new Exception(&quot;Customer already exists&quot;);
+//		} catch ( Exception e ) {
+//			throw new Exception(e);
+//		}
+
+<span class="nc" id="L83">		return _customerRepository.save( payload );</span>
+	}
+
+	public Customer update(Customer payload, long id) throws Exception {
+
+<span class="nc" id="L88">		LOGGER.info( &quot;[CustomerService :: update] -&gt; Updating existing user&quot; );</span>
+
+<span class="nc bnc" id="L90" title="All 2 branches missed.">		if ( _customerRepository.existsById( id ) ) {</span>
+
+<span class="nc" id="L92">			Optional&lt;Customer&gt; customer = _customerRepository.findById(id);</span>
+
+<span class="nc bnc" id="L94" title="All 2 branches missed.">			if ( customer.isEmpty() ) {</span>
+<span class="nc" id="L95">				LOGGER.error(&quot;Exception: ID provided does not exist&quot;);</span>
+<span class="nc" id="L96">				throw new Exception();</span>
+			}
+
+<span class="nc" id="L99">			payload.setId( id );</span>
+
+<span class="nc bnc" id="L101" title="All 2 branches missed.">			if ( payload.getContacts().size() &lt; 1 ) throw new Exception(&quot;Should have at least 1 contact added&quot;);</span>
+
+<span class="nc" id="L103">			customer.get().setName( payload.getName() );</span>
+<span class="nc" id="L104">			customer.get().setDateOfBirth( payload.getDateOfBirth() );</span>
+<span class="nc" id="L105">			customer.get().setState( payload.getState() );</span>
+<span class="nc" id="L106">			customer.get().setCity( payload.getCity() );</span>
+<span class="nc" id="L107">			customer.get().setZipcode( payload.getZipcode() );</span>
+<span class="nc" id="L108">			customer.get().setCpf( payload.getCpf() );</span>
+<span class="nc" id="L109">			customer.get().setContacts(new ArrayList&lt;&gt;( payload.getContacts() ) );</span>
+<span class="nc" id="L110">			customer.get().setId( payload.getId() );</span>
+
+<span class="nc" id="L112">			return _customerRepository.save( customer.get() );</span>
+
+		} else
+<span class="nc" id="L115">			throw new Exception(&quot;Exception: ID provided does not exist&quot;);</span>
+
+
+
+	}
+
+	public void delete( long id) throws Exception {
+<span class="nc" id="L122">		LOGGER.info( &quot;[CustomerService :: delete] -&gt; Delete user&quot; );</span>
+<span class="nc" id="L123">		Optional&lt;Customer&gt; customer = _customerRepository.findById(id);</span>
+<span class="nc bnc" id="L124" title="All 2 branches missed.">		if (customer.isEmpty()) {</span>
+<span class="nc" id="L125">			ResponseEntity.notFound().build();</span>
+<span class="nc" id="L126">			return;</span>
+		}
+		try {
+<span class="nc" id="L129">			_customerRepository.deleteById( id );</span>
+<span class="nc" id="L130">			ResponseEntity.ok( &quot;Deleted successfully&quot; );</span>
+<span class="nc" id="L131">		} catch ( Exception e ) {</span>
+<span class="nc" id="L132">			throw new Exception(e);</span>
+<span class="nc" id="L133">		}</span>
+<span class="nc" id="L134">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

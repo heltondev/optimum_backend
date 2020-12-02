@@ -5,6 +5,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.Data;
 import lombok.NonNull;
 import org.slf4j.Logger;
@@ -12,7 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -93,6 +96,8 @@ public class Customer {
 
 		try {
 			ObjectMapper om = new ObjectMapper();
+			om.registerModule(new JavaTimeModule());
+			om.disable( SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 			value = om.writeValueAsString(this);
 		} catch ( JsonProcessingException e ) {
 			LOGGER.error("Exception serializing to json in Accounts", e);

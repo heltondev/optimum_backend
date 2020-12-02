@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">manager</a> &gt; <a href="index.source.html" class="el_package">com.heltondev.manager.service</a> &gt; <span class="el_source">UserService.java</span></div><h1>UserService.java</h1><pre class="source lang-java linenums">package com.heltondev.manager.service;
+
+import com.heltondev.manager.model.User;
+import com.heltondev.manager.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.stereotype.Service;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
+import javax.persistence.Query;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+<span class="nc" id="L25">public class UserService {</span>
+
+<span class="nc" id="L27">	private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);</span>
+
+	@Autowired
+	private UserRepository _userRepository;
+
+	@PersistenceContext(type = PersistenceContextType.EXTENDED)
+	private EntityManager em;
+
+	public ResponseEntity&lt;List&lt;User&gt;&gt; findAll() {
+<span class="nc" id="L36">		LOGGER.info( &quot;[UserService :: findAll] -&gt; Searching for all users&quot; );</span>
+<span class="nc" id="L37">		return new ResponseEntity&lt;&gt;( _userRepository.findAll(), HttpStatus.OK );</span>
+	}
+
+	public ResponseEntity&lt;User&gt; findById(long id) throws Exception {
+<span class="nc" id="L41">		LOGGER.info( &quot;[UserService :: findById] -&gt; Searching for specific items by id&quot; );</span>
+<span class="nc" id="L42">		Optional&lt;User&gt; user = _userRepository.findById(id);</span>
+<span class="nc bnc" id="L43" title="All 2 branches missed.">		if ( user.isPresent() )</span>
+<span class="nc" id="L44">			return user</span>
+<span class="nc" id="L45">						.map( selected -&gt; new ResponseEntity&lt;&gt;( selected, HttpStatus.OK ) )</span>
+<span class="nc" id="L46">						.orElseGet( () -&gt; new ResponseEntity&lt;&gt;( HttpStatus.NOT_FOUND ) );</span>
+<span class="nc" id="L47">		else throw new Exception();</span>
+	}
+
+	public User findByUsername(String username) {
+<span class="nc" id="L51">		LOGGER.info( &quot;[UserService :: findById] -&gt; Searching for specific items by id&quot; );</span>
+<span class="nc" id="L52">		String queryName = &quot;User.findByUsername&quot;;</span>
+<span class="nc" id="L53">		Query query = em.createNamedQuery(queryName);</span>
+<span class="nc" id="L54">		query.setParameter( &quot;username&quot;, username );</span>
+<span class="nc" id="L55">		return ( User ) query.getSingleResult();</span>
+	}
+
+	public UserDetails loadUserByUsername( String username) {
+
+<span class="nc" id="L60">		User user = findByUsername( username );</span>
+
+		// UserDetails Password should be passed as it is stored in the database (SHA256)
+<span class="nc bnc" id="L63" title="All 2 branches missed.">		if (user.getUsername().equals(username)) {</span>
+<span class="nc" id="L64">			return new org.springframework.security.core.userdetails.User(user.getUsername(), BCrypt.hashpw( user.getPassword(), BCrypt.gensalt(10) ),</span>
+					new ArrayList&lt;&gt;());
+		} else {
+<span class="nc" id="L67">			throw new UsernameNotFoundException(&quot;User not found with username: &quot; + username);</span>
+		}
+	}
+
+	public User create(User payload) throws Exception {
+<span class="nc" id="L72">		LOGGER.info( &quot;[UserService :: create] -&gt; Adding new user&quot; );</span>
+<span class="nc" id="L73">		Long selectedId = findByUsername( payload.getUsername() ).getId();</span>
+		try {
+<span class="nc bnc" id="L75" title="All 2 branches missed.">			if (!_userRepository.existsById( selectedId ) )</span>
+<span class="nc" id="L76">				return _userRepository.save( payload );</span>
+			else
+<span class="nc" id="L78">				throw new Exception(&quot;User already exists&quot;);</span>
+<span class="nc" id="L79">		} catch ( Exception e ) {</span>
+<span class="nc" id="L80">			throw new Exception(e);</span>
+		}
+	}
+
+	public User update(User payload, long id) throws Exception {
+
+<span class="nc" id="L86">		LOGGER.info( &quot;[UserService :: update] -&gt; Updating existing user&quot; );</span>
+
+<span class="nc bnc" id="L88" title="All 2 branches missed.">		if ( _userRepository.existsById( id ) ) {</span>
+
+<span class="nc" id="L90">			Optional&lt;User&gt; user = _userRepository.findById(id);</span>
+
+<span class="nc bnc" id="L92" title="All 6 branches missed.">			if ( user.isEmpty() || (payload.getName().isBlank() &amp;&amp; payload.getPassword().isBlank()) ) {</span>
+<span class="nc" id="L93">				LOGGER.error(&quot;Exception: ID provided does not exist&quot;);</span>
+<span class="nc" id="L94">				throw new Exception();</span>
+			}
+
+<span class="nc bnc" id="L97" title="All 2 branches missed.">			if ( !payload.getName().isBlank() )</span>
+<span class="nc" id="L98">				user.get().setName( payload.getName() );</span>
+
+<span class="nc bnc" id="L100" title="All 2 branches missed.">			if ( !payload.getPassword().isBlank() )</span>
+<span class="nc" id="L101">				user.get().setPassword( payload.getPassword() );</span>
+
+<span class="nc bnc" id="L103" title="All 4 branches missed.">			if ( user.get().getCreatedAt() == null || user.get().getCreatedAt().getTime() &lt; 1)</span>
+<span class="nc" id="L104">				payload.setCreatedAt( new Timestamp(System.currentTimeMillis()) );</span>
+
+<span class="nc" id="L106">			payload.setId( id );</span>
+<span class="nc" id="L107">			payload.setCreatedAt( user.get().getCreatedAt() );</span>
+<span class="nc" id="L108">			payload.setUpdatedAt( new Timestamp(System.currentTimeMillis()) );</span>
+
+<span class="nc" id="L110">			return _userRepository.save( payload );</span>
+
+		} else
+<span class="nc" id="L113">			throw new Exception();</span>
+
+	}
+
+	public void delete( long id) throws Exception {
+<span class="nc" id="L118">		LOGGER.info( &quot;[UserService :: delete] -&gt; Delete user&quot; );</span>
+<span class="nc" id="L119">		Optional&lt;User&gt; account = _userRepository.findById(id);</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">		if (account.isEmpty()) {</span>
+<span class="nc" id="L121">			ResponseEntity.notFound().build();</span>
+<span class="nc" id="L122">			return;</span>
+		}
+		try {
+<span class="nc" id="L125">			_userRepository.deleteById( id );</span>
+<span class="nc" id="L126">		} catch ( Exception e ) {</span>
+<span class="nc" id="L127">			throw new Exception(e);</span>
+<span class="nc" id="L128">		}</span>
+<span class="nc" id="L129">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

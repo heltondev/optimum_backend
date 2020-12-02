@@ -5,10 +5,10 @@ import lombok.NonNull;
 
 import java.io.Serializable;
 
-public class Jwt implements Serializable{
+public class Jwt{
 
 	@Data
-	public static class JwtRequestBuilder implements Serializable {
+	public static class JwtRequestBuilder {
 
 		private static final long serialVersionUID = 5926468583005150707L;
 
@@ -22,7 +22,7 @@ public class Jwt implements Serializable{
 	}
 
 	@Data
-	public static class JwtResponseBuilder implements Serializable {
+	public static class JwtResponseBuilder {
 		private static final long serialVersionUID = -8091879091924046844L;
 		private final String token;
 	}

@@ -1,0 +1,4 @@
+com/heltondev/manager/controller/UserControllerTest.class
+com/heltondev/manager/controller/CustomerControllerTest.class
+com/heltondev/manager/controller/JwtControllerTest.class
+com/heltondev/manager/ManagerApplicationTests.class

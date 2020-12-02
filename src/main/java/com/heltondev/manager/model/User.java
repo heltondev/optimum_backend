@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -78,6 +80,8 @@ public class User {
 		try {
 			ObjectMapper om = new ObjectMapper();
 			value = om.writeValueAsString(this);
+			om.registerModule(new JavaTimeModule());
+			om.disable( SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 		} catch ( JsonProcessingException e ) {
 			LOGGER.error("Exception serializing to json in Accounts", e);
 		}

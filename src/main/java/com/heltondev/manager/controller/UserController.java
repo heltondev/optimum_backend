@@ -13,7 +13,6 @@ import javax.validation.Valid;
 import java.util.List;
 
 @Slf4j
-@Controller
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping( { "/api/v1/users" })
